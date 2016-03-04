@@ -3,7 +3,7 @@ CFLAGS_common ?= -Wall -std=gnu99
 CFLAGS_orig = -O0
 CFLAGS_opt  = -O0
 
-EXEC = phonebook_orig phonebook_opt
+EXEC = phonebook_orig phonebook_opt phonebook_opt2
 all: $(EXEC)
 
 SRCS_common = main.c
@@ -13,11 +13,17 @@ phonebook_orig: $(SRCS_common) phonebook_orig.c phonebook_orig.h
 		-DIMPL="\"$@.h\"" -o $@ \
 		$(SRCS_common) $@.c
 
-phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h
+phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h smaz.c smaz.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
 		-DIMPL="\"$@.h\"" -o $@ \
 		-DOPT="1"\
-		$(SRCS_common) $@.c
+		$(SRCS_common) $@.c smaz.c
+
+phonebook_opt2: $(SRCS_common) phonebook_opt2.c phonebook_opt2.h smaz.c smaz.h
+	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
+		-DIMPL="\"$@.h\"" -o $@ \
+		-DOPT="1"\
+		$(SRCS_common) $@.c smaz.c
 
 run: $(EXEC)
 	echo 3 | sudo tee /proc/sys/vm/drop_caches
