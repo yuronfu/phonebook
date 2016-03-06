@@ -35,13 +35,19 @@ int main(int argc, char *argv[])
         printf("cannot open the file\n");
         return -1;
     }
-
+#if defined(HASH)
+    /*build the hash table*/
+    entry *pHead = NULL, *e = NULL;
+    printf("size of entry : %lu bytes\n", sizeof(entry));
+    init_hashtable(&pHead,&e);
+#else
     /* build the entry */
     entry *pHead, *e;
     pHead = (entry *) malloc(sizeof(entry));
     printf("size of entry : %lu bytes\n", sizeof(entry));
     e = pHead;
     e->pNext = NULL;
+#endif
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
