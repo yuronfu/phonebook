@@ -22,13 +22,13 @@ phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h
 phonebook_opt2: $(SRCS_common) phonebook_opt2.c phonebook_opt2.h smaz.c smaz.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
 		-DIMPL="\"$@.h\"" -o $@ \
-		-DOPT="1"\
+		-DOPT="2"\
 		$(SRCS_common) $@.c smaz.c
 
 phonebook_opt3: $(SRCS_common) phonebook_opt3.c phonebook_opt3.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
 		-DIMPL="\"$@.h\"" -o $@ \
-		-DOPT="1"\
+		-DOPT="3"\
 		-DHASH="1"\
 		$(SRCS_common) $@.c
 
@@ -43,6 +43,12 @@ cache-test: $(EXEC)
 	perf stat --repeat 100 \
 		-e cache-misses,cache-references,instructions,cycles \
 		./phonebook_opt
+	perf stat --repeat 100 \
+		-e cache-misses,cache-references,instructions,cycles \
+		./phonebook_opt2
+	perf stat --repeat 100 \
+		-e cache-misses,cache-references,instructions,cycles \
+		./phonebook_opt3
 
 output.txt: cache-test calculate
 	./calculate
@@ -56,4 +62,4 @@ calculate: calculate.c
 .PHONY: clean
 clean:
 	$(RM) $(EXEC) *.o perf.* \
-	      	calculate orig.txt opt.txt output.txt runtime.png
+	      	calculate orig.txt opt.txt opt2.txt opt3.txt output.txt runtime.png

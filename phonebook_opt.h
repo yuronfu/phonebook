@@ -3,7 +3,6 @@
 
 #define MAX_LAST_NAME_SIZE 16
 
-#define OPT 1
 struct __ENTRY_DETAILS {
     char firstName[16];
     char email[16];
